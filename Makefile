@@ -12,7 +12,7 @@ prep:
 	GIT_NAME=$(GIT_NAME) GIT_EMAIL=$(GIT_EMAIL) \
 		 ./bin/templater.sh files/gitconfig.template > files/gitconfig
 
-	./bin/clone-repos.sh
+	./bin/git-clone-repos.sh
 build:
 	docker build -t ansible-$(ANSIBLE_VERSION):${USERNAME} .
 
