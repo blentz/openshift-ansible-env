@@ -5,4 +5,4 @@ Build Instructions
 ------------------
 1. edit the Makefile
 2. make
-3. docker run -tiP ansible-<version>:<tag>
+3. docker run -tiP ansible-[version]:[tag]
