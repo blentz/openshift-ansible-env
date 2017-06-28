@@ -18,11 +18,7 @@ WORKDIR /root
 
 RUN mkdir .ssh git && chmod 700 .ssh
 
-COPY git/ops-sop git/ops-sop
-COPY git/openshift-ansible git/openshift-ansible
-COPY git/openshift-ansible-ops git/openshift-ansible-ops
-COPY git/openshift-tools git/openshift-tools
-#COPY git/openshift-ansible-private git/openshift-ansible-private
+COPY git/* git/
 
 COPY files/gitconfig .gitconfig
 COPY files/bashrc .bashrc
