@@ -16,9 +16,13 @@ COPY files/ansible.cfg /etc/ansible/ansible.cfg
 
 WORKDIR /root
 
-RUN mkdir .ssh git && chmod 700 .ssh
+RUN mkdir .ssh && chmod 700 .ssh
 
-COPY git/* git/
+COPY git git
+
+# install our roles into /usr/share/ansible/roles
+COPY files/install-roles.sh .
+RUN ./install-roles.sh
 
 COPY files/gitconfig .gitconfig
 COPY files/bashrc .bashrc
