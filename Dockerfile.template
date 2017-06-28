@@ -1,0 +1,31 @@
+FROM ansible/centos7-ansible:stable
+LABEL MAINTAINER OpenShift Operations <libra-ops@redhat.com>
+
+RUN yum update -y && \
+    yum install -y \
+            gcc \
+            python-devel \
+            openssl-devel \
+            vim-enhanced \
+    && \
+    yum clean all
+
+RUN pip install -U 'ansible=={{ANSIBLE_VERSION}}'
+
+COPY files/ansible.cfg /etc/ansible/ansible.cfg
+
+WORKDIR /root
+
+RUN mkdir .ssh git && chmod 700 .ssh
+
+COPY git/ops-sop git/ops-sop
+COPY git/openshift-ansible git/openshift-ansible
+COPY git/openshift-ansible-ops git/openshift-ansible-ops
+COPY git/openshift-tools git/openshift-tools
+#COPY git/openshift-ansible-private git/openshift-ansible-private
+
+COPY files/gitconfig .gitconfig
+COPY files/bashrc .bashrc
+
+VOLUME /root/.ssh
+ENTRYPOINT '/bin/bash'
