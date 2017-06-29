@@ -20,6 +20,10 @@ RUN mkdir .ssh && chmod 700 .ssh
 
 COPY git git
 
+COPY rpms rpms
+RUN yum install -y ./rpms/noarch/*.rpm && \
+    yum clean all
+
 # install our roles into /usr/share/ansible/roles
 COPY files/install-roles.sh .
 RUN ./install-roles.sh {{GIT_BRANCH}}
