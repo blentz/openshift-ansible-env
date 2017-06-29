@@ -22,7 +22,7 @@ COPY git git
 
 # install our roles into /usr/share/ansible/roles
 COPY files/install-roles.sh .
-RUN ./install-roles.sh
+RUN ./install-roles.sh {{GIT_BRANCH}}
 
 COPY files/gitconfig .gitconfig
 COPY files/bashrc .bashrc

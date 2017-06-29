@@ -1,11 +1,19 @@
 #!/bin/bash
 
+if [ ! -z $1 ]; then
+    GIT_BRANCH=$1
+else
+    GIT_BRANCH='prod'
+fi
+
 [ ! -d roles ] && mkdir roles
 
 pushd ./git
 for repo in `ls -1 .`; do
     if [ -d ${repo} ]; then
         pushd ${repo}
+        git checkout $GIT_BRANCh
+
         ROLEDIRS="roles ops_roles tools_roles private_roles"
 
         for roledir in $ROLEDIRS; do
@@ -47,7 +55,7 @@ EOF
 done
 popd
 
-# using the --ignore-errors flag because some roles are missing meta/main.yml
+# using the --ignore-errors to skip over various issues.
 ansible-galaxy install --ignore-errors -p /usr/share/ansible/roles -r roles.yml
 
 # clean up after ourselves
