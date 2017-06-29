@@ -14,22 +14,31 @@ RUN pip install -U 'ansible=={{ANSIBLE_VERSION}}'
 
 COPY files/ansible.cfg /etc/ansible/ansible.cfg
 
+RUN mkdir -p /etc/ansible/inventory && \
+    ln -s /usr/share/ansible/inventory/multi_inventory.py \
+          /etc/ansible/inventory/multi_inventory.py
+
 WORKDIR /root
 
 RUN mkdir .ssh && chmod 700 .ssh
 
-COPY git git
-
-COPY rpms rpms
-RUN yum install -y ./rpms/noarch/*.rpm && \
-    yum clean all
-
-# install our roles into /usr/share/ansible/roles
-COPY files/install-roles.sh .
-RUN ./install-roles.sh {{GIT_BRANCH}}
-
 COPY files/gitconfig .gitconfig
 COPY files/bashrc .bashrc
+COPY files/install-roles.sh .
+
+# install git repos...
+COPY git git
+
+# install rpms...
+COPY rpms rpms
+RUN yum install -y \
+        ./rpms/noarch/openshift-tools-ansible-filter-plugins-*.rpm \
+        ./rpms/noarch/openshift-tools-ansible-inventory-*.rpm \
+    && \
+    yum clean all
+
+# install our roles into our roles_path
+RUN ./install-roles.sh {{GIT_BRANCH}}
 
 VOLUME /root/.ssh
 ENTRYPOINT '/bin/bash'
