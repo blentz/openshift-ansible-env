@@ -12,7 +12,7 @@ pushd ./git
 for repo in `ls -1 .`; do
     if [ -d ${repo} ]; then
         pushd ${repo}
-        git checkout $GIT_BRANCh
+        git checkout $GIT_BRANCH
 
         ROLEDIRS="roles ops_roles tools_roles private_roles"
 
