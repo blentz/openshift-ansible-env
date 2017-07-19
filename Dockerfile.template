@@ -26,9 +26,6 @@ COPY files/gitconfig .gitconfig
 COPY files/bashrc .bashrc
 COPY files/install-roles.sh .
 
-# install git repos...
-COPY git git
-
 # install rpms...
 COPY rpms rpms
 RUN yum install -y \
@@ -36,6 +33,9 @@ RUN yum install -y \
         ./rpms/noarch/openshift-tools-ansible-inventory-*.rpm \
     && \
     yum clean all
+
+# install git repos...
+COPY git git
 
 # install our roles into our roles_path
 RUN ./install-roles.sh {{GIT_BRANCH}}
